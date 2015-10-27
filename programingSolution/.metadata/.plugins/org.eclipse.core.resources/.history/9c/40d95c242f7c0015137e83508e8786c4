@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
+	<display-name>com.omega.rest</display-name>
+  		<welcome-file-list>
+    		<welcome-file>index.jsp</welcome-file>
+  		</welcome-file-list>
+<servlet>
+    <servlet-name>jersey-serlvet</servlet-name>
+    <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
+    <init-param>
+        <param-name>javax.ws.rs.Application</param-name>
+        <param-value>com.countries.json.JsonApplication</param-value>
+    </init-param>
+    <init-param>
+        <param-name>jersey.config.server.mvc.templateBasePath.jsp</param-name>
+        <param-value>/WEB-INF/jsp</param-value>
+    </init-param>
+</servlet>
+<servlet-mapping>
+    <servlet-name>jersey-serlvet</servlet-name>
+    <url-pattern>/*</url-pattern>
+</servlet-mapping>
+</web-app>
+
+
+

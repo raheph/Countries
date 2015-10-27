@@ -1,0 +1,20 @@
+@CHARSET "UTF-8";
+
+.jumbotron h1, .h1 {
+    color: blue;
+    align: center;
+}
+
+.btn {
+    border-radius: 0px;
+}
+
+.navbar-default {
+  background-color:teal;
+  background-image: none;
+  background-repeat: no-repeat;
+ }
+ 
+ .container .jumbotron {
+      padding-left: 250px;
+ }

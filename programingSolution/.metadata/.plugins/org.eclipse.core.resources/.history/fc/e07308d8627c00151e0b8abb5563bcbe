@@ -1,0 +1,6 @@
+@CHARSET "UTF-8";
+
+blocktext {
+	text-align: center
+	text-color: green
+}

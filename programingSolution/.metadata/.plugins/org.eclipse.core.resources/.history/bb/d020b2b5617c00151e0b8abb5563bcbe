@@ -1,0 +1,17 @@
+package com.countries.json;
+
+import org.glassfish.jersey.jackson.JacksonFeature;
+import org.glassfish.jersey.server.ResourceConfig;
+
+import com.countries.json.action.CountryResource;
+
+public class JsonApplication extends ResourceConfig {
+	
+	public JsonApplication(){
+		super(
+				CountryResource.class,
+				JacksonFeature.class
+				);
+	}
+
+}

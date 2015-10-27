@@ -61,8 +61,6 @@ If you are working on Eclipse you can set up tomcat and build it from eclipse fr
 
 Please feel free to reach out at my email address or phone number:
 raheph@gmail.com
-or my phone number:
-206-557-9497
  
 
 have fun !

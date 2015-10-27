@@ -1,0 +1,119 @@
+package com.countries.json.service;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
+import org.glassfish.jersey.client.ClientConfig;
+
+import com.countries.json.entity.Country;
+
+public class CountryService {
+	private Country[] countries;
+	private static final String url = "http://restcountries.eu/rest/v1/all";
+
+	public CountryService() {
+    	ClientConfig config = new ClientConfig();
+    	config.register(CountryService.class);
+    	Client client = ClientBuilder.newClient(config);
+    	Response jsonResponse = client.target(url).request(MediaType.APPLICATION_JSON).get();
+		if (jsonResponse.getStatus() != 200) {
+			throw new RuntimeException("Failed : HTTP error code : " + jsonResponse.getStatus());
+		}
+    	countries  = jsonResponse.readEntity(Country[].class);
+	} 
+	
+	public List<Country> mostBordingCountries(){
+		List<Country> mostBordingCountries = new ArrayList<Country>();		
+		int count = 0;
+		for (Country country : getCountries()) {
+			if (country.getBorders().size() > count) {
+				count = country.getBorders().size();
+			}
+		}
+		
+		for (Country country : getCountries()) {
+			if (country.getBorders().size() == count) {
+				mostBordingCountries.add(country);
+			}
+		}
+		
+		return mostBordingCountries;
+	}
+	
+	/**
+	 * get a collection of countries that are most
+	 * borders of a country. 
+	 * @return a collection of borders
+	 */
+	public Map<Country, List<Country>> borders() {
+		List<Country> borders = new ArrayList<Country>();
+		Map<Country, List<Country>> contriesAndBorder = new HashMap<String, List<Country>>();
+		for (Country mostBording : mostBordingCountries()) {
+			for (String border : mostBording.getBorders()) {
+				for (Country country : getCountries()) {
+					if (border.equalsIgnoreCase(country.getAlpha3Code())) {
+						borders.add(country);
+					}
+				}
+			}
+			contriesAndBorder.put(mostBording, borders);
+		}
+		return contriesAndBorder;
+	}
+	
+    /**
+     * A method that will return all countries that are
+     * also islands.
+     * @return countries that are also islands
+     */
+    public List<Country> getIslands() {
+    	List<Country> islands = new ArrayList<Country>();
+    	//populate countries that are also island 
+    	for (Country country : getCountries()) {
+    		if (country.getName().matches(".*[Ii]sland.*")) {
+    			islands.add(country);
+    		}
+    	}
+    	return islands;
+    }
+    
+    /**
+     * a method that takes a region name and returns countries in the given region.
+     * @param regionName the name of the region
+     * @return a collection of countries a given region.
+     */
+    public List<Country> getCountriesByRegion(String regionName) {
+    	List<Country> contryByRegion = new ArrayList<Country>();
+    	//populate countries that are also island 
+    	for (Country country : getCountries()) {
+    		if (country.getRegion().equalsIgnoreCase(regionName)) {
+    			contryByRegion.add(country);
+    		}
+    	}
+    	return contryByRegion;    	
+    }
+
+    /**
+     * a method that will return all Countries.
+     * @return a collection of countries.
+     */
+	public Country[] getCountries() {
+		return countries;
+	}
+	
+	/**
+	 * a method that will set all countries collection.
+	 * @param countries a collection of countries
+	 */
+	public void setResponse(Country[] countries) {
+		this.countries = countries;
+	}
+
+}

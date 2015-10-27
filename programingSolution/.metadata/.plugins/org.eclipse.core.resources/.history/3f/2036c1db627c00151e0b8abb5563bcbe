@@ -1,0 +1,6 @@
+@CHARSET "UTF-8";
+
+tittletext {
+	text-align: center
+	text-color: green
+}

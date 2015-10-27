@@ -1,0 +1,90 @@
+(function() {
+  var app = angular.module("app", []);
+  
+  //$scope and $http are dependency injections.
+  app.controller("HttpCtrl", function($scope, $http) {
+    var app = this;
+    $scope.navTitle = 'All islands';
+    $scope.operation="";
+    $scope.isSaveDisabled = true;
+    $scope.isDeleteDisabled = true;
+     
+    var response = $http.get('/JerseyJson-1.0/rest/countries/all/');
+    response.success(function(data) {
+      $scope.islands = data;
+      console.log("[main] # of items: " + data.length)
+      angular.forEach(data, function(element) {
+      console.log("[main] islands: " + element.name);
+      });
+    })
+    response.error(function(data, status, headers, config) {
+      alert("AJAX failed to get data, status=" + status);
+    })
+    
+    var mostBordingResponse = $http.get('/JerseyJson-1.0/rest/countries/mostBordingCountries/');
+      mostBordingResponse.success(function(data) {
+      $scope.mostBordingCountries = data;
+      console.log("[main] # of items: " + data.length)
+      angular.forEach(data, function(element) {
+      console.log("[main] islands: " + element.name);
+      });
+    })
+    mostBordingResponse.error(function(data, status, headers, config) {
+      alert("AJAX failed to get data, status=" + status);
+    })
+    
+      var BordersResponse = $http.get('/JerseyJson-1.0/rest/countries/mostBordingCountries/borders/');
+      BordersResponse.success(function(data) {
+      $scope.borders = data;
+      console.log("[main] # of items: " + data.length)
+      angular.forEach(data, function(element) {
+      console.log("[main] islands: " + element.name);
+      });
+    })
+    BordersResponse.error(function(data, status, headers, config) {
+      alert("AJAX failed to get data, status=" + status);
+    })
+     
+    $scope.getRegion = function(id) {
+      var response = $http.get('/JerseyJson-1.0/rest/countries/'+ id );
+       
+      response.success(function(data) {
+        $scope.region = data;
+        $scope.operation="update";
+        $scope.isSaveDisabled = false;
+        $scope.isDeleteDisabled = false;
+        })
+       
+      response.error(function(data, status, headers, config) {
+        alert("AJAX failed to get data, status=" + status);
+      })
+    };
+     
+    $scope.clearForm = function() {
+      $scope.region = {
+          regionName:''
+      };
+    }
+     
+    $scope.resetSearch = function(name) {
+      var app = this;
+      $scope.operation="";
+      $scope.clearForm();
+      $scope.isSaveDisabled = true;
+      $scope.isDeleteDisabled = true;
+      $scope.navTitle = 'All Stars';
+      $scope.searchName = '';
+       
+      var response = $http.get('/JerseyJson-1.0/rest/countries/islands/');
+      response.success(function(data) {
+        $scope.islands = data;
+        $scope.$apply();
+        console.log("[resetSearch] # of items: " + data.length)
+        });
+       
+      response.error(function(data, status, headers, config) {
+        alert("AJAX failed to get data, status=" + status);
+      })
+    };
+  }); 
+})();

@@ -1,0 +1,7 @@
+@CHARSET "UTF-8";
+
+P.blocktext {
+    margin-left: auto;
+    margin-right: auto;
+    width: 6em
+}
